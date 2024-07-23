@@ -28,7 +28,6 @@ def fetch_events():
         response = requests.get(GITHUB_EVENTS_API_URL,
                                 params=params, headers=headers)
         requests_left = int(response.headers.get('X-RateLimit-Remaining', 0))
-        print(requests_left)
         if requests_left == 0:
             print('Requests quota exhausted. Waiting to reset.')
             return all_events
