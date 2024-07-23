@@ -15,9 +15,10 @@ Note that GitHub Events API provides the events with 5 minutes delay, therefore 
 
 ## How to run
 1. Make sure you have Docker installed.
-2. Update the configuration in the `.env` file
-3. `docker compose up -d`
-4. API is now running on `localhost:5000`. Sample request: `http://localhost:5000/events/count-by-type?offset=10`
+2. Generate a GitHub API token.
+3. Add the token (along with the other configuration items) to the configuration in the `.env` file.
+4. `docker compose up -d`
+5. API is now running on `localhost:5000`. Sample request: `http://localhost:5000/events/count-by-type?offset=10`
 
 ## Possible improvements:
 - In production, I would use wait-for-it script to wait for database to initialize.
