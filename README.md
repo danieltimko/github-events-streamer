@@ -22,6 +22,8 @@ Note that GitHub Events API provides the events with 5 minutes delay, therefore 
 ## Possible improvements:
 - In production, I would use wait-for-it script to wait for database to initialize.
 - In production, it could be better to use smth like Docker secrets for passwords etc.
-- I have a concern about the true accuracy. Data processing rate is likely slower than data generation rate.
-Plus, the rate limit is small -- 5000 per hour for authenticated requests. So it might be practically
-impossible to process truly all events.
+- I have a concern about the true accuracy. Even for authenticated request there is a limit of 5000/hour
+so data processing rate likely needs to be manually decreased (sleep in between fetches, POOL_INTERVAL_SECONDS)
+in order not to run out of quota. However, then a question is if some events are not missed in between.
+If the data generation rate is too big, it might be practically impossible to process truly all events.
+- Time series chart for a specific event could be interesting.

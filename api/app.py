@@ -17,7 +17,8 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv('DB_HOST')
 
 app = Flask(__name__)
-url = f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}'
+url = (f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@'
+       f'{DB_HOST}:5432/{DB_NAME}')
 engine = create_engine(url)
 
 
@@ -36,7 +37,8 @@ def avg_pr_delay():
         return jsonify({'avg_time_seconds': 'N/A'}), 200
     sum_times = 0
     for i in range(1, len(events)):
-        sum_times += (events[i].created_at - events[i-1].created_at).total_seconds()
+        delta = (events[i].created_at - events[i-1].created_at)
+        sum_times += delta.total_seconds()
     avg_time = round(sum_times / (len(events)-1), 3)
     return jsonify({'avg_time_seconds': avg_time}), 200
 
@@ -89,7 +91,8 @@ def events_by_type_histogram():
 @app.route('/events/pr-count-by-repo')
 def pr_by_repo():
     with Session(engine) as session:
-        events = session.query(Event).filter(Event.type == 'PullRequestEvent').all()
+        events = (session.query(Event)
+                  .filter(Event.type == 'PullRequestEvent').all())
     result = defaultdict(lambda: 0)
     for e in events:
         result[e.repo] += 1
